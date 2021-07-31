@@ -66,6 +66,7 @@ function startScreenRecording() {
         if (chrome.runtime.lastError) {
             console.log('Error while capturing tab.');
             console.log(chrome.runtime.lastError.message);
+            alert("Please run chrome with:\n--whitelisted-extension-id=" + chrome.runtime.id);
             return;
         }
         var tabCaptureStream = new MediaStream();
@@ -74,7 +75,6 @@ function startScreenRecording() {
                 tabCaptureStream.addTrack(track);
             });
         } catch (e) {
-            alert("Please run chrome with:\n--whitelisted-extension-id=" + chrome.runtime.id);
             return;
         }
 

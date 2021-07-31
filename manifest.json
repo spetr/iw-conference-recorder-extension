@@ -1,0 +1,28 @@
+{
+  "name": "TabRecorder",
+  "description": "Records selected browser tab",
+  "version": "1.0",
+  "permissions": [
+    "storage",
+    "tabs",
+    "activeTab",
+    "tabCapture",
+    "unlimitedStorage",
+    "background",
+    "<all_urls>"
+  ],
+  "background": {
+    "scripts": [
+      "lib/RecordRTC.js",
+      "background.js",
+      "background.common.js"
+    ],
+    "persistent": false
+  },
+  "browser_action": {
+    "default_title": "TabRecorder",
+    "default_icon": "images/icon.png",
+    "default_popup": "popup.html"
+  },
+  "manifest_version": 2
+}

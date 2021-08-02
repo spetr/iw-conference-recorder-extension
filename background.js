@@ -83,37 +83,42 @@ function startScreenRecording() {
         }
 
         var mediaRecorder = new MediaRecorder(stream, options);
-        var sequenceID = 0;
+        var seqID = 0;
         mediaRecorder.ondataavailable = function (event) {
             if (event.data.size > 0) {
-                sequenceID++;
-                console.log(`Sending chunk ${sequenceID} to API.`)
+                seqID++;
+                console.log(`Sending chunk ${seqID} to API.`);
+                console.log(mediaRecorder.state);
                 var xhr = new XMLHttpRequest();
-                xhr.open('POST', apiURL, true);
+                var url = apiURL;
+                if (mediaRecorder.state === 'inactive') {
+                    url += '?end'
+                }
+                xhr.open('POST', url, true);
                 xhr.setRequestHeader('Content-Type', "video/webm");
-                xhr.setRequestHeader('X-ID', "test.webm")
-                xhr.setRequestHeader('X-Sequence-ID', sequenceID)
+                xhr.setRequestHeader('X-ID', "test.webm");
+                xhr.setRequestHeader('X-SeqID', seqID);
                 xhr.send(event.data);
                 xhr.onreadystatechange = function () {
                     if (this.readyState === XMLHttpRequest.DONE) {
                         if (this.status === 200) {
-                            console.log(`Succesfuly send chunk ${sequenceID} to API.`);
+                            console.log(`Succesfuly send chunk ${seqID} to API.`);
                             return
                         }
-                        console.log(`Error while sending chunk ${sequenceID} to API.`);
+                        console.log(`Error while sending chunk ${seqID} to API.`);
                         console.log(this);
                     }
                 }
             }
         };
         mediaRecorder.onerror = function (event) {
-            console.log('Media recorder error.')
+            console.log('Media recorder error.');
             console.log(event);
             isRecording = false;
             mediaRecorder.stop();
         };
         mediaRecorder.onstop = function (event) {
-            console.log('Media recorder stop.')
+            console.log('Media recorder stop.');
             console.log(event);
             isRecording = false;
         };
@@ -123,4 +128,4 @@ function startScreenRecording() {
     });
 };
 
-console.log('iw-conference-recorder-extension loaded')
+console.log('iw-conference-recorder-extension loaded');

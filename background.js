@@ -3,6 +3,7 @@
 const audioBitsPerSecond = 128000;
 const videoBitsPerSecond = 2610000;
 const videoCodec = 'VP8'; // VP8, VP9, H264
+const apiURL = 'http://127.0.0.1:80/record';
 
 let runtimePort;
 let isRecording = false;
@@ -104,7 +105,7 @@ function startScreenRecording() {
         mediaRecorder.ondataavailable = function (event) {
             if (event.data.size > 0) {
                 var xhr = new XMLHttpRequest();
-                xhr.open('POST', 'http://127.0.0.1:80/record', true);
+                xhr.open('POST', apiURL, true);
                 xhr.setRequestHeader('Content-Type', "video/webm");
                 xhr.setRequestHeader('X-ID', "test.webm")
                 xhr.send(event.data);

@@ -58,17 +58,7 @@ function startScreenRecording() {
             console.log('Please run chrome with: --whitelisted-extension-id=' + chrome.runtime.id);
             return;
         }
-        var tabCaptureStream = new MediaStream();
-        try {
-            stream.getTracks().forEach(function (track) {
-                console.log('Adding track from tabCapture to MediaStream: ', track)
-                tabCaptureStream.addTrack(track);
-            });
-        } catch (e) {
-            console.log('Error while reading tabCapture streams')
-            console.log(e)
-            return;
-        }
+        console.log('Recieved tabCapture stream:', stream)
 
         var options = {
             type: 'video',
